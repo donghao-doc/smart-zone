@@ -1,6 +1,8 @@
+import { useEffect } from 'react';
 import type { FormProps } from 'antd';
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import http from '../../utils/http';
 import bg from '../../assets/bg.jpg';
 import lgbg from '../../assets/lgbg.jpg';
 import logo from '../../assets/logo.png';
@@ -20,6 +22,17 @@ const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (errorInfo) => {
 };
 
 function Login() {
+  useEffect(() => {
+    http
+      .post('/api/login', { username: 'admin', password: '123456' })
+      .then((res) => {
+        console.log('登录 res', res);
+      })
+      .catch((err) => {
+        console.log('登录 err', err);
+      });
+  }, []);
+
   return (
     <div className="login" style={{ backgroundImage: `url(${bg})` }}>
       <div className="lgbg" style={{ backgroundImage: `url(${lgbg})` }}>
@@ -52,7 +65,7 @@ function Login() {
                 { required: true, message: '密码不能为空' },
               ]}
             >
-              <Input.Password prefix={<LockOutlined/>} placeholder="请输入密码" />
+              <Input.Password prefix={<LockOutlined />} placeholder="请输入密码" />
             </Form.Item>
 
             <Form.Item label={null}>
