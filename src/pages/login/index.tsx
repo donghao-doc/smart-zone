@@ -24,9 +24,8 @@ function LoginForm() {
     const { username, password } = values;
     login({ username: username!, password: password! })
       .then(({ data }) => {
-        console.log('登录 data', data);
         dispatch(setToken(data.token));
-        navigate('/');
+        navigate('/', { replace: true });
       })
       .catch(err => {
         console.log('登录 err', err);
