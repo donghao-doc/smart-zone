@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { message } from 'antd';
+import store from '../../store';
 
 const http = axios.create({
   baseURL: 'https://example.com',
@@ -8,6 +9,12 @@ const http = axios.create({
 
 // 请求拦截器
 http.interceptors.request.use(config => {
+  const token = store.getState().auth.token;
+  if (token) {
+    // Authorization 是 http 协议的一个标准字段，专门用来携带认证信息
+    // Bearer 是一种认证类型，表示后面携带的是一个令牌（token）
+    config.headers.Authorization = `Bearer ${token}`;
+  }
   return config;
 });
 
