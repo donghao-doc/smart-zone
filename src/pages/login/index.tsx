@@ -1,19 +1,32 @@
+import { useDispatch } from 'react-redux';
 import type { FormProps } from 'antd';
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import './index.scss';
 import logo from '../../assets/logo.png';
+import { login } from '../../api/user';
+import { setToken } from '../../store/login/authSlice';
 
 type FieldType = {
   username?: string;
   password?: string;
 };
 
-const onFinish: FormProps<FieldType>['onFinish'] = values => {
-  console.log('Success:', values);
-};
-
 function LoginForm() {
+  const dispatch = useDispatch();
+
+  const onFinish: FormProps<FieldType>['onFinish'] = values => {
+    const { username, password } = values;
+    login({ username: username!, password: password! })
+      .then(({ data }) => {
+        console.log('登录 data', data);
+        dispatch(setToken(data.token));
+      })
+      .catch(err => {
+        console.log('登录 err', err);
+      });
+  };
+
   return (
     <Form name="loginForm" style={{ width: '100%' }} onFinish={onFinish} autoComplete="off">
       <Form.Item<FieldType>

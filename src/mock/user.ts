@@ -5,7 +5,7 @@ const baseUrl = 'https://example.com';
 // 登录接口
 Mock.mock(`${baseUrl}/login`, 'post', options => {
   const { username, password } = JSON.parse(options.body);
-  if (username === 'admin' && password === '123456') {
+  if (username === 'admin' && password === 'admin123') {
     return {
       code: '0',
       message: '登录成功',
@@ -19,7 +19,7 @@ Mock.mock(`${baseUrl}/login`, 'post', options => {
       },
     };
   }
-  if (username === 'manager' && password === '123456') {
+  if (username === 'manager' && password === 'manager123') {
     return {
       code: '0',
       message: '登录成功',
@@ -33,7 +33,7 @@ Mock.mock(`${baseUrl}/login`, 'post', options => {
       },
     };
   }
-  if (username === 'user' && password === '123456') {
+  if (username === 'user' && password === 'user123') {
     return {
       code: '0',
       message: '登录成功',
