@@ -1,5 +1,6 @@
 import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
+import RequireAuth from '../utils/RequireAuth';
 
 const Home = lazy(() => import('../pages/home'));
 const Login = lazy(() => import('../pages/login'));
@@ -8,11 +9,19 @@ const NotFound = lazy(() => import('../pages/404'));
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Home />,
+    element: (
+      <RequireAuth needLogin={true}>
+        <Home />
+      </RequireAuth>
+    ),
   },
   {
     path: '/login',
-    element: <Login />,
+    element: (
+      <RequireAuth needLogin={false}>
+        <Login />
+      </RequireAuth>
+    ),
   },
   {
     path: '*',
