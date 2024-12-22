@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import type { FormProps } from 'antd';
 import { Button, Form, Input } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
@@ -14,16 +16,23 @@ type FieldType = {
 
 function LoginForm() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const onFinish: FormProps<FieldType>['onFinish'] = values => {
+    setLoading(true);
     const { username, password } = values;
     login({ username: username!, password: password! })
       .then(({ data }) => {
         console.log('登录 data', data);
         dispatch(setToken(data.token));
+        navigate('/');
       })
       .catch(err => {
         console.log('登录 err', err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -44,7 +53,7 @@ function LoginForm() {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+        <Button type="primary" htmlType="submit" loading={loading} style={{ width: '100%' }}>
           登录
         </Button>
       </Form.Item>

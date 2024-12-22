@@ -1,5 +1,9 @@
 import Mock from 'mockjs';
 
+Mock.setup({
+  timeout: '200-500',
+});
+
 const baseUrl = 'https://example.com';
 
 // 登录接口
