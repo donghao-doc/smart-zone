@@ -1,4 +1,5 @@
 import Mock from 'mockjs';
+import { menuList, managerMenuList, userMenuList } from '../database';
 
 Mock.setup({
   timeout: '200-500',
@@ -54,6 +55,37 @@ Mock.mock(`${baseUrl}/login`, 'post', options => {
   return {
     code: '401',
     message: '用户名或密码错误',
+    data: null,
+  };
+});
+
+// 菜单接口
+Mock.mock(`${baseUrl}/menu`, 'get', () => {
+  const token = window.localStorage.getItem('token');
+  if (token === 'mock-token-admin') {
+    return {
+      code: '0',
+      message: '请求成功',
+      data: menuList,
+    };
+  }
+  if (token === 'mock-token-manager') {
+    return {
+      code: '0',
+      message: '请求成功',
+      data: managerMenuList,
+    };
+  }
+  if (token === 'mock-token-user') {
+    return {
+      code: '0',
+      message: '请求成功',
+      data: userMenuList,
+    };
+  }
+  return {
+    code: '401',
+    message: '无权限',
     data: null,
   };
 });

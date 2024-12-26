@@ -1,0 +1,66 @@
+[
+  {
+    "icon": "DashboardOutlined",
+    "label": "工作台",
+    "key": "/dashboard"
+  },
+  {
+    "icon": "TeamOutlined",
+    "label": "租户管理",
+    "key": "/users",
+    "children": [
+      {
+        "icon": "UnorderedListOutlined",
+        "label": "租户列表",
+        "key": "/users/list"
+      },
+      {
+        "icon": "UserAddOutlined",
+        "label": "新增租户",
+        "key": "/users/add"
+      }
+    ]
+  },
+  {
+    "icon": "LaptopOutlined",
+    "label": "物业管理",
+    "key": "/estate",
+    "children": [
+      {
+        "icon": "InsertRowLeftOutlined",
+        "label": "楼宇管理",
+        "key": "/estate/tenement"
+      },
+      {
+        "icon": "BankOutlined",
+        "label": "房间管理",
+        "key": "/estate/room"
+      },
+      {
+        "icon": "TruckOutlined",
+        "label": "车辆信息",
+        "key": "/estate/car"
+      }
+    ]
+  },
+  {
+    "icon": "ToolOutlined",
+    "label": "报修管理",
+    "key": "/repair"
+  },
+  {
+    "icon": "ToolOutlined",
+    "label": "设备管理",
+    "key": "/equipment"
+  },
+  {
+    "icon": "ThunderboltOutlined",
+    "label": "能源消耗",
+    "key": "/energy"
+  },
+  {
+    "icon": "UserOutlined",
+    "label": "个人中心",
+    "key": "/personal"
+  }
+]
