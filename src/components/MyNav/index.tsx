@@ -1,12 +1,8 @@
+import { useState, useEffect } from 'react';
 import { Menu } from 'antd';
-import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
 import type { MenuProps } from 'antd';
+import { queryMenu } from '../../api';
+import icons, { type Icons } from '../../constants/icons';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -24,22 +20,32 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-  getItem('Files', '9', <FileOutlined />),
-];
-
 function MyNav() {
+  const [items, setItems] = useState<MenuItem[]>([]);
+
+  useEffect(() => {
+    queryMenu()
+      .then(({ data }) => {
+        console.log('查询菜单 res', data);
+        const menuItems = data.map(item =>
+          getItem(
+            item.label,
+            item.key,
+            icons[item.icon as Icons],
+            item.children?.map(child => getItem(child.label, child.key, icons[child.icon as Icons]))
+          )
+        );
+        setItems(menuItems);
+      })
+      .catch(err => {
+        console.log('查询菜单 err', err);
+        setItems([]);
+      });
+  }, []);
+
   return (
     <div className="demo-logo-vertical">
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+      <Menu theme="dark" defaultSelectedKeys={['/dashboard']} mode="inline" items={items} />
     </div>
   );
 }
