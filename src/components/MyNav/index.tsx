@@ -3,6 +3,8 @@ import { Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import { queryMenu } from '../../api';
 import icons, { type Icons } from '../../constants/icons';
+import logo from '../../assets/logo.png';
+import './index.scss';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -44,7 +46,11 @@ function MyNav() {
   }, []);
 
   return (
-    <div className="demo-logo-vertical">
+    <div className="layout-nav">
+      <div className="nav-logo">
+        <img className="nav-logo-img" src={logo} alt="logo" />
+        <h1 className="nav-logo-text">智慧园区</h1>
+      </div>
       <Menu theme="dark" defaultSelectedKeys={['/dashboard']} mode="inline" items={items} />
     </div>
   );
