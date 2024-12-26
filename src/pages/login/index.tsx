@@ -25,6 +25,7 @@ function LoginForm() {
     login({ username: username!, password: password! })
       .then(({ data }) => {
         dispatch(setToken(data.token));
+        window.localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
         navigate('/', { replace: true });
       })
       .catch(err => {
