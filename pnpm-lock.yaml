@@ -11,6 +11,9 @@ importers:
       antd:
         specifier: ^6.2.0
         version: 6.2.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      normalize.css:
+        specifier: ^8.0.1
+        version: 8.0.1
       react:
         specifier: ^19.2.0
         version: 19.2.3
@@ -1357,6 +1360,9 @@ packages:
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
+
+  normalize.css@8.0.1:
+    resolution: {integrity: sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -3072,6 +3078,8 @@ snapshots:
     optional: true
 
   node-releases@2.0.27: {}
+
+  normalize.css@8.0.1: {}
 
   optionator@0.9.4:
     dependencies:
