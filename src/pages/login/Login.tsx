@@ -1,9 +1,11 @@
+import { LockOutlined, UserOutlined } from '@ant-design/icons'
+import { Button, Form, Input } from 'antd'
+import { useState } from 'react'
+
 import bg from '../../assets/bg.jpg'
 import lgbg from '../../assets/lgbg.jpg'
 import logo from '../../assets/logo.png'
-import { useState } from 'react'
-import { Form, Input, Button } from 'antd';
-import { UserOutlined,LockOutlined  } from '@ant-design/icons';
+
 import './login.scss'
 
 function Login() {
@@ -41,7 +43,7 @@ function Login() {
               name="username"
               rules={[
                 { required: true, message: '用户名不能为空' },
-                { pattern:/^\w{4,8}$/,message:"用户名必须是4-8位数字字母组合"},
+                { pattern: /^\w{4,8}$/, message: '用户名必须是4-8位数字字母组合' },
               ]}
             >
               <Input placeholder="请输入您的用户名" prefix={<UserOutlined/>}/>
@@ -55,7 +57,7 @@ function Login() {
             <Form.Item >
               <Button
                 type="primary"
-                style={{width:"100%"}}
+                style={{ width: '100%' }}
                 onClick={handleLogin}
                 loading={loading}
               >
