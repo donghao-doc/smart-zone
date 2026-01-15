@@ -38,6 +38,8 @@ export default defineConfig([
       'no-multi-spaces': ['error'],
       // 注释符号后必须保留一个空格
       'spaced-comment': ['error', 'always'],
+      // 允许使用 any 类型
+      '@typescript-eslint/no-explicit-any': 'off',
       // import 顺序：第三方库 > 绝对路径 > 相对路径
       'simple-import-sort/imports': [
         'error',
