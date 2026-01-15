@@ -22,9 +22,8 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
 
-  const handleLogin = async () => {
+  const handleLogin = async (values: LoginFormValues) => {
     try {
-      const values = await form.validateFields()
       setLoading(true)
       const res = await login(values)
       console.log('登录 res:', res)
@@ -46,7 +45,7 @@ function Login() {
             </div>
             <h1>朋远智慧园区管理平台</h1>
           </div>
-          <Form form={form}>
+          <Form form={form} onFinish={handleLogin}>
             <Form.Item
               name="username"
               rules={[
@@ -65,8 +64,8 @@ function Login() {
             <Form.Item>
               <Button
                 type="primary"
+                htmlType="submit"
                 style={{ width: '100%' }}
-                onClick={handleLogin}
                 loading={loading}
               >
                 登录
