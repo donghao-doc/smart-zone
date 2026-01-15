@@ -34,7 +34,7 @@ function Login() {
         <div className="part">
           <div className="title">
             <div className="logo">
-              <img src={logo} width={100} />
+              <img src={logo} width={100} alt="logo" />
             </div>
             <h1>朋远智慧园区管理平台</h1>
           </div>
@@ -46,15 +46,15 @@ function Login() {
                 { pattern: /^\w{4,8}$/, message: '用户名必须是4-8位数字字母组合' },
               ]}
             >
-              <Input placeholder="请输入您的用户名" prefix={<UserOutlined/>}/>
+              <Input placeholder="请输入您的用户名" prefix={<UserOutlined />} />
             </Form.Item>
             <Form.Item
               name="password"
               rules={[{ required: true, message: '密码不能为空' }]}
             >
-              <Input.Password placeholder="请输入您的密码" prefix={<LockOutlined/>}/>
+              <Input.Password placeholder="请输入您的密码" prefix={<LockOutlined />} />
             </Form.Item>
-            <Form.Item >
+            <Form.Item>
               <Button
                 type="primary"
                 style={{ width: '100%' }}
