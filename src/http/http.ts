@@ -9,20 +9,20 @@ import axios, {
 import { store } from '../store'
 import type { ApiResponse } from './types'
 
-// 默认超时时间（毫秒）
-const DEFAULT_TIMEOUT = 10_000
-
 // 统一 axios 实例，集中配置 baseURL、超时、默认 headers
 const http = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '',
-  timeout: DEFAULT_TIMEOUT,
+  timeout: 10_000,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
 })
 
-// 请求拦截：自动注入 Authorization（token 来自 user store）
+/**
+ * 请求拦截器
+ * - 自动注入 Authorization（token 来自 user store）
+ */
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const token = store.getState().user.token
@@ -37,17 +37,20 @@ http.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error),
 )
 
-// 响应拦截：按后端约定处理 code，失败时提示并抛出
+/**
+ * 响应拦截
+ * - 按后端约定处理 code，失败时弹出提示
+ */
 http.interceptors.response.use(
   (response: AxiosResponse<ApiResponse>) => {
-    const payload = response.data
-    if (payload.code === 200) {
-      return payload as unknown as AxiosResponse<ApiResponse>
+    const res = response.data
+    if (res.code === 200) {
+      return res as unknown as AxiosResponse<ApiResponse>
     }
-    if (payload.message) {
-      message.error(payload.message)
+    if (res.message) {
+      message.error(res.message)
     }
-    return Promise.reject(payload)
+    return Promise.reject(res)
   },
   (error: AxiosError) => {
     if (error.response) {

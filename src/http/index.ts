@@ -6,7 +6,6 @@ import type { ApiResponse } from './types'
 // 透出给业务侧的请求配置类型
 export type RequestConfig<D = unknown> = AxiosRequestConfig<D>
 
-// GET 封装：返回拦截器处理后的数据
 export function get<T = unknown, P = Record<string, unknown>>(
   url: string,
   params?: P,
@@ -18,7 +17,6 @@ export function get<T = unknown, P = Record<string, unknown>>(
   })
 }
 
-// POST 封装：返回拦截器处理后的数据
 export function post<T = unknown, D = unknown>(
   url: string,
   data?: D,
