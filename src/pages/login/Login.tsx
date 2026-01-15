@@ -1,10 +1,14 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, Input } from 'antd'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
+import { login } from '../../api/user'
 import bg from '../../assets/bg.jpg'
 import lgbg from '../../assets/lgbg.jpg'
 import logo from '../../assets/logo.png'
+import { type AppDispatch } from '../../store'
+import { setUser } from '../../store/userSlice'
 
 import './login.scss'
 
@@ -16,13 +20,17 @@ function Login() {
 
   const [form] = Form.useForm<LoginFormValues>()
   const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleLogin = async () => {
     try {
       const values = await form.validateFields()
       setLoading(true)
-      // TODO: replace with real login request.
-      console.log('login values', values)
+      const res = await login(values)
+      console.log('登录 res:', res)
+      dispatch(setUser(res.data))
+    } catch (err) {
+      console.log('登录 err:', err)
     } finally {
       setLoading(false)
     }
