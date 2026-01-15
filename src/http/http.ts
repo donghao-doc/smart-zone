@@ -2,12 +2,16 @@ import { message } from 'antd'
 import axios, {
   AxiosError,
   AxiosHeaders,
+  type AxiosRequestConfig,
   type AxiosResponse,
   type InternalAxiosRequestConfig,
 } from 'axios'
 
 import { store } from '../store'
 import type { ApiResponse } from './types'
+
+const shouldShowErrMsg = (config?: AxiosRequestConfig) =>
+  config?.showErrMsg !== false
 
 // 统一 axios 实例，集中配置 baseURL、超时、默认 headers
 const http = axios.create({
@@ -38,7 +42,7 @@ http.interceptors.request.use(
 )
 
 /**
- * 响应拦截
+ * 响应拦截器
  * - 按后端约定处理 code，失败时弹出提示
  */
 http.interceptors.response.use(
@@ -47,12 +51,16 @@ http.interceptors.response.use(
     if (res.code === 200) {
       return res as unknown as AxiosResponse<ApiResponse>
     }
-    if (res.message) {
+    if (res.message && shouldShowErrMsg(response.config)) {
       message.error(res.message)
     }
     return Promise.reject(res)
   },
   (error: AxiosError) => {
+    if (!shouldShowErrMsg(error.config)) {
+      return Promise.reject(error)
+    }
+
     if (error.response) {
       const data = error.response.data as { message?: string } | undefined
       const messageText = data?.message || error.message || '请求失败'

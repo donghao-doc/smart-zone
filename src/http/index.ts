@@ -4,7 +4,9 @@ import http from './http'
 import type { ApiResponse } from './types'
 
 // 透出给业务侧的请求配置类型
-export type RequestConfig<D = unknown> = AxiosRequestConfig<D>
+export type RequestConfig<D = unknown> = AxiosRequestConfig<D> & {
+  showErrMsg?: boolean
+}
 
 export function get<T = unknown, P = Record<string, unknown>>(
   url: string,

@@ -12,6 +12,6 @@ export interface LoginUser {
   btnAuth: string[]
 }
 
-export const login = (payload: LoginPayload,): Promise<ApiResponse<LoginUser>> => {
-  return post<LoginUser, LoginPayload>('https://www.demo.com/login', payload)
+export const login = (data: LoginPayload,): Promise<ApiResponse<LoginUser>> => {
+  return post<LoginUser, LoginPayload>('https://www.demo.com/login', data)
 }
