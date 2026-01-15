@@ -1,3 +1,4 @@
+import { message } from 'antd'
 import axios, {
   AxiosError,
   AxiosHeaders,
@@ -6,6 +7,7 @@ import axios, {
 } from 'axios'
 
 import { store } from '../store'
+import type { ApiResponse } from './types'
 
 // 默认超时时间（毫秒）
 const DEFAULT_TIMEOUT = 10_000
@@ -19,69 +21,6 @@ const http = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
-// 统一错误结构，方便业务侧处理
-export class HttpError extends Error {
-  status?: number
-  code?: string
-  data?: unknown
-  url?: string
-  method?: string
-
-  constructor(
-    message: string,
-    info: {
-      status?: number;
-      code?: string;
-      data?: unknown;
-      url?: string;
-      method?: string;
-    } = {},
-  ) {
-    super(message)
-    this.name = 'HttpError'
-    this.status = info.status
-    this.code = info.code
-    this.data = info.data
-    this.url = info.url
-    this.method = info.method
-  }
-}
-
-// 从常见响应结构中提取错误信息
-const extractMessage = (data: unknown, fallback: string) => {
-  if (!data || typeof data !== 'object') {
-    return fallback
-  }
-  const payload = data as Record<string, unknown>
-  const message = payload.message ?? payload.msg ?? payload.error
-  if (typeof message === 'string' && message.trim()) {
-    return message
-  }
-  return fallback
-}
-
-// 将 axios 错误统一转换为 HttpError
-const normalizeAxiosError = (error: AxiosError) => {
-  if (error.response) {
-    const { status, data, config } = error.response
-    return new HttpError(extractMessage(data, error.message || `HTTP ${status}`), {
-      status,
-      code: error.code,
-      data,
-      url: config?.url,
-      method: config?.method,
-    })
-  }
-
-  if (error.request) {
-    return new HttpError('Network error', {
-      code: error.code,
-    })
-  }
-
-  return new HttpError(error.message || 'Unknown error', { code: error.code })
-}
 
 // 请求拦截：自动注入 Authorization（token 来自 user store）
 http.interceptors.request.use(
@@ -98,10 +37,34 @@ http.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error),
 )
 
-// 响应拦截：将错误归一化
+// 响应拦截：按后端约定处理 code，失败时提示并抛出
 http.interceptors.response.use(
-  (response: AxiosResponse) => response,
-  (error: AxiosError) => Promise.reject(normalizeAxiosError(error)),
+  (response: AxiosResponse<ApiResponse>) => {
+    const payload = response.data
+    if (payload.code === 200) {
+      return payload as unknown as AxiosResponse<ApiResponse>
+    }
+    if (payload.message) {
+      message.error(payload.message)
+    }
+    return Promise.reject(payload)
+  },
+  (error: AxiosError) => {
+    if (error.response) {
+      const data = error.response.data as { message?: string } | undefined
+      const messageText = data?.message || error.message || '请求失败'
+      message.error(messageText)
+      return Promise.reject(error)
+    }
+
+    if (error.request) {
+      message.error('网络异常，请稍后重试')
+      return Promise.reject(error)
+    }
+
+    message.error(error.message || '未知错误')
+    return Promise.reject(error)
+  },
 )
 
 export default http
