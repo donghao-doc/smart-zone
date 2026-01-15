@@ -36,6 +36,8 @@ export default defineConfig([
       'key-spacing': ['error', { beforeColon: false, afterColon: true }],
       // 禁止连续多个空格
       'no-multi-spaces': ['error'],
+      // 注释符号后必须保留一个空格
+      'spaced-comment': ['error', 'always'],
       // import 顺序：第三方库 > 绝对路径 > 相对路径
       'simple-import-sort/imports': [
         'error',
