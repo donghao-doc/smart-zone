@@ -5,6 +5,8 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from 'axios'
 
+import { store } from '../store'
+
 // 默认超时时间（毫秒）
 const DEFAULT_TIMEOUT = 10_000
 
@@ -17,22 +19,6 @@ const http = axios.create({
     'Content-Type': 'application/json',
   },
 })
-
-// Token 获取器：便于接入不同的鉴权存储方式
-type TokenProvider = () => string | null;
-
-// 默认从浏览器 localStorage 读取 token
-let tokenProvider: TokenProvider = () => {
-  if (typeof window === 'undefined') {
-    return null
-  }
-  return window.localStorage.getItem('token')
-}
-
-// 提供给外部替换 token 读取逻辑（如 cookie、pinia、redux）
-export const setTokenProvider = (provider: TokenProvider) => {
-  tokenProvider = provider
-}
 
 // 统一错误结构，方便业务侧处理
 export class HttpError extends Error {
@@ -97,10 +83,10 @@ const normalizeAxiosError = (error: AxiosError) => {
   return new HttpError(error.message || 'Unknown error', { code: error.code })
 }
 
-// 请求拦截：自动注入 Authorization
+// 请求拦截：自动注入 Authorization（token 来自 user store）
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = tokenProvider()
+    const token = store.getState().user.token
     if (!token) {
       return config
     }
