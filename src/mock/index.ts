@@ -390,7 +390,7 @@ const customizeMenuList = [
 ]
 
 // 菜单接口
-Mock.mock('https://www.demo.com/menu', 'get', (options: any) => {
+Mock.mock('https://www.demo.com/menu', 'get', () => {
   const token = sessionStorage.getItem('token')
   if (token == 'mocktoken123456admin') {
     return {
@@ -530,7 +530,7 @@ Mock.mock('https://www.demo.com/roomList', 'post', (options: any) => {
 
 // 合同管理
 Mock.mock('https://www.demo.com/contractList', 'post', (options: any) => {
-  const { page, pageSize } = JSON.parse(options.body)
+  const { pageSize } = JSON.parse(options.body)
   console.log('后端合同管理接到参数', JSON.parse(options.body))
   return {
     code: 200,
@@ -554,7 +554,7 @@ Mock.mock('https://www.demo.com/contractList', 'post', (options: any) => {
 
 // 账单管理
 Mock.mock('https://www.demo.com/billList', 'post', (options: any) => {
-  const { page, pageSize, companyName, contact, phone } = JSON.parse(options.body)
+  const { pageSize } = JSON.parse(options.body)
   console.log('后端账单管理接到参数', JSON.parse(options.body))
   return {
     code: 200,
