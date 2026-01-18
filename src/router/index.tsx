@@ -1,7 +1,9 @@
+import { lazy } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
-import Home from '../pages/Home'
-import Login from '../pages/login/Login.tsx'
-import NotFound from '../pages/NotFound'
+
+const Home = lazy(() => import('../pages/Home'))
+const Login = lazy(() => import('../pages/login/Login'))
+const NotFound = lazy(() => import('../pages/NotFound'))
 
 const router = createBrowserRouter([
   {
