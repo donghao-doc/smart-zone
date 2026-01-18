@@ -13,5 +13,5 @@ export interface LoginUser {
 }
 
 export const login = (data: LoginPayload,): Promise<ApiResponse<LoginUser>> => {
-  return post<LoginUser, LoginPayload>('https://www.demo.com/login', data)
+  return post<LoginUser, LoginPayload>('/login', data)
 }
