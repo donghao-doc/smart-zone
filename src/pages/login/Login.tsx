@@ -2,6 +2,7 @@ import { LockOutlined, UserOutlined } from '@ant-design/icons'
 import { Button, Form, Input } from 'antd'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { login } from '../../api/user'
 import bg from '../../assets/bg.jpg'
@@ -21,6 +22,7 @@ function Login() {
   const [form] = Form.useForm<LoginFormValues>()
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const handleLogin = async (values: LoginFormValues) => {
     try {
@@ -28,6 +30,7 @@ function Login() {
       const res = await login(values)
       console.log('登录 res:', res)
       dispatch(setUser(res.data))
+      navigate('/', { replace: true })
     } catch (err) {
       console.log('登录 err:', err)
     } finally {
