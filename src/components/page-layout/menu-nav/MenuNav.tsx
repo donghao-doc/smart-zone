@@ -2,10 +2,11 @@ import { Menu } from 'antd'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getMenuList } from '../../../api/system'
+import { getMenuList, type MenuApiItem, type MenuItem } from '../../../api/system'
 import logo from '../../../assets/logo.png'
 import type { AppDispatch, RootState } from '../../../store'
 import { setMenuList } from '../../../store/systemSlice'
+import iconMap from './IconMap'
 
 import './menu-nav.scss'
 
@@ -15,6 +16,24 @@ function MenuNav() {
   const token = useSelector((state: RootState) => state.user.token)
 
   function handleMenuClick() {}
+
+  const mapMenuItems = (items: MenuApiItem[]): MenuItem[] =>
+    items.map((item) => {
+      const baseItem: MenuItem = {
+        key: item.key,
+        label: item.label,
+        icon: typeof item.icon === 'string' ? iconMap[item.icon] : undefined,
+      }
+
+      if (item.children && item.children.length > 0) {
+        return {
+          ...baseItem,
+          children: mapMenuItems(item.children),
+        } as MenuItem
+      }
+
+      return baseItem
+    })
 
   useEffect(() => {
     const fetchMenuList = async () => {
@@ -29,6 +48,8 @@ function MenuNav() {
 
     fetchMenuList()
   }, [dispatch, token])
+
+  const menuItems = mapMenuItems(menuList)
   
   return (
     <div className='menu-nav'>
@@ -41,7 +62,7 @@ function MenuNav() {
         defaultSelectedKeys={['/dashboard']}
         mode="inline"
         theme="dark"
-        items={menuList}
+        items={menuItems}
         onClick={handleMenuClick}
         selectedKeys={[location.pathname]}
       />
