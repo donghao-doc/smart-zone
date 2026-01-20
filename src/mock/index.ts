@@ -390,8 +390,17 @@ const customizeMenuList = [
 ]
 
 // 菜单接口
-Mock.mock('https://www.demo.com/menu', 'get', () => {
-  const token = sessionStorage.getItem('token')
+Mock.mock('https://www.demo.com/menu', 'get', (options: any) => {
+  const requestHeaders = options?.headers ?? {}
+  const authHeader =
+    requestHeaders.Authorization ||
+    requestHeaders.authorization ||
+    requestHeaders.AUTHORIZATION ||
+    ''
+  const headerToken = typeof authHeader === 'string'
+    ? authHeader.replace(/^Bearer\s+/i, '')
+    : ''
+  const token = headerToken
   if (token == 'mocktoken123456admin') {
     return {
       code: 200,
