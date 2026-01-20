@@ -6,17 +6,9 @@ import RequireAuth from './RequireAuth'
 const Home = lazy(() => import('../pages/Home'))
 const Login = lazy(() => import('../pages/login/Login'))
 const NotFound = lazy(() => import('../pages/NotFound'))
+const PageLayout = lazy(() => import('../components/page-layout/PageLayout'))
 
 const router = createBrowserRouter([
-  {
-    path: '/',
-    element: (
-      // needLogin=true 表示该路由必须登录后访问
-      <RequireAuth needLogin>
-        <Home />
-      </RequireAuth>
-    ),
-  },
   {
     path: '/login',
     element: (
@@ -27,12 +19,23 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '*',
+    path: '/',
     element: (
+      // needLogin=true 表示该路由必须登录后访问
       <RequireAuth needLogin>
-        <NotFound />
+        <PageLayout />
       </RequireAuth>
     ),
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: '*',
+        element: <NotFound />,
+      },
+    ],
   },
 ])
 
