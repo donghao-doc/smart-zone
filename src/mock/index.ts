@@ -390,17 +390,11 @@ const customizeMenuList = [
 ]
 
 // 菜单接口
-Mock.mock('https://www.demo.com/menu', 'get', (options: any) => {
-  const requestHeaders = options?.headers ?? {}
-  const authHeader =
-    requestHeaders.Authorization ||
-    requestHeaders.authorization ||
-    requestHeaders.AUTHORIZATION ||
-    ''
-  const headerToken = typeof authHeader === 'string'
-    ? authHeader.replace(/^Bearer\s+/i, '')
-    : ''
-  const token = headerToken
+Mock.mock(/https:\/\/www\.demo\.com\/menu.*/, 'get', (options: any) => {
+  const requestUrl = options?.url ?? ''
+  const token = requestUrl.includes('?')
+    ? new URL(requestUrl, 'https://www.demo.com').searchParams.get('token')
+    : null
   if (token == 'mocktoken123456admin') {
     return {
       code: 200,

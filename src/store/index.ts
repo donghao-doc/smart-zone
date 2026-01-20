@@ -11,9 +11,11 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+import systemReducer from './systemSlice'
 import userReducer from './userSlice'
 
 const rootReducer = combineReducers({
+  system: systemReducer,
   user: userReducer,
 })
 
@@ -21,7 +23,7 @@ const persistedReducer = persistReducer(
   {
     key: 'smart-zone',
     storage,
-    whitelist: ['user'],
+    whitelist: ['system', 'user'],
   },
   rootReducer,
 )

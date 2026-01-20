@@ -1,0 +1,28 @@
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+
+import type { MenuItem } from '../api/system'
+
+export interface SystemState {
+  menuList: MenuItem[]
+}
+
+const initialState: SystemState = {
+  menuList: [],
+}
+
+const systemSlice = createSlice({
+  name: 'system',
+  initialState,
+  reducers: {
+    setMenuList(state, action: PayloadAction<MenuItem[]>) {
+      state.menuList = action.payload
+    },
+    clearMenuList(state) {
+      state.menuList = []
+    },
+  },
+})
+
+export const { setMenuList, clearMenuList } = systemSlice.actions
+
+export default systemSlice.reducer
