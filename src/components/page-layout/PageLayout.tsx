@@ -2,6 +2,8 @@ import { Layout, theme } from 'antd'
 import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
+import MenuNav from './menu-nav/MenuNav.tsx'
+
 const { Header, Content, Footer, Sider } = Layout
 
 function PageLayout() {
@@ -11,7 +13,7 @@ function PageLayout() {
   return <div className='page-layout'>
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
-        {/* <NavLeft/>*/}
+        <MenuNav />
       </Sider>
       <Layout>
         <Header style={{ paddingRight: '20px', background: colorBgContainer, textAlign: 'right' }}>
