@@ -1,18 +1,31 @@
 import { Breadcrumb } from 'antd'
 import { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import type { MenuApiItem } from '../../../api/system'
 import type { RootState } from '../../../store'
 
-const findBreadcrumbLabels = (
+type BreadNode = {
+  key: string
+  label: string
+  isDirectory: boolean
+}
+
+const findBreadcrumbNodes = (
   menuList: MenuApiItem[],
   targetPath: string,
 ) => {
-  const walk = (items: MenuApiItem[], parents: string[]): string[] => {
+  const walk = (items: MenuApiItem[], parents: BreadNode[]): BreadNode[] => {
     for (const item of items) {
-      const nextParents = [...parents, item.label]
+      const nextParents = [
+        ...parents,
+        {
+          key: item.key,
+          label: item.label,
+          isDirectory: Boolean(item.children && item.children.length > 0),
+        },
+      ]
       if (item.key === targetPath) {
         return nextParents
       }
@@ -35,8 +48,14 @@ function PageBreadCrumb() {
   const currentPath = location.pathname === '/' ? '/dashboard' : location.pathname
 
   const breadList = useMemo(() => {
-    const labels = findBreadcrumbLabels(menuList, currentPath)
-    return labels.map((label) => ({ title: label }))
+    const nodes = findBreadcrumbNodes(menuList, currentPath)
+    return nodes.map((node, index) => {
+      const isLast = index === nodes.length - 1
+      const canLink = !isLast && !node.isDirectory
+      return {
+        title: canLink ? <Link to={node.key}>{node.label}</Link> : node.label,
+      }
+    })
   }, [currentPath, menuList])
 
   return <Breadcrumb items={breadList} className="mt mb" />
