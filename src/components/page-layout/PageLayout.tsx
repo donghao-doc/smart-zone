@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { Outlet } from 'react-router-dom'
 
 import MenuNav from './menu-nav/MenuNav.tsx'
+import PageHeader from './page-header/PageHeader.tsx'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -17,7 +18,7 @@ function PageLayout() {
       </Sider>
       <Layout>
         <Header style={{ paddingRight: '20px', background: colorBgContainer, textAlign: 'right' }}>
-          {/* <MyHeader/>*/}
+          <PageHeader />
         </Header>
         <Content style={{ margin: '0 16px', height: '90vh', overflowY: 'auto', overflowX: 'hidden' }}>
           {/* <MyBreadCrumb />*/}
