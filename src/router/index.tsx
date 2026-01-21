@@ -4,6 +4,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import type { MenuApiItem } from '../api/system'
 import { addMenuRoutes as addMenuRoutesBase, type PatchableRouter } from './dynamic-routes'
 import RequireAuth from './RequireAuth'
+import { componentMap } from './router-map'
 
 const Login = lazy(() => import('../pages/login'))
 const NotFound = lazy(() => import('../pages/404'))
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
       </RequireAuth>
     ),
     children: [
+      {
+        index: true,
+        element: componentMap['/dashboard'],
+      },
       {
         path: '*',
         element: <NotFound />,

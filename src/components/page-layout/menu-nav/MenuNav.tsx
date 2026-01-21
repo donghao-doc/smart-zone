@@ -2,6 +2,7 @@ import { Menu } from 'antd'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { getMenuList, type MenuApiItem, type MenuItem } from '../../../api/system'
 import logo from '../../../assets/logo.png'
@@ -15,6 +16,7 @@ import './menu-nav.scss'
 function MenuNav() {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
+  const location = useLocation()
   const menuList = useSelector((state: RootState) => state.system.menuList)
   const token = useSelector((state: RootState) => state.user.token)
 
@@ -57,6 +59,7 @@ function MenuNav() {
   }, [dispatch, token])
 
   const menuItems = mapMenuItems(menuList)
+  const selectedKey = location.pathname === '/' ? '/dashboard' : location.pathname
   
   return (
     <div className='menu-nav'>
@@ -71,7 +74,7 @@ function MenuNav() {
         theme="dark"
         items={menuItems}
         onClick={handleMenuClick}
-        selectedKeys={[location.pathname]}
+        selectedKeys={[selectedKey]}
       />
     </div>
   )

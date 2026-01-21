@@ -1,6 +1,6 @@
 function Dashboard() {
   return (
-    <div>页面开发中...</div>
+    <div>工作台</div>
   )
 }
 
