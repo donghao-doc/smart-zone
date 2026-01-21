@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import { getMenuList, type MenuApiItem, type MenuItem } from '../../../api/system'
 import logo from '../../../assets/logo.png'
+import { addMenuRoutes } from '../../../router'
 import type { AppDispatch, RootState } from '../../../store'
 import { setMenuList } from '../../../store/systemSlice'
 import iconMap from './IconMap'
@@ -41,6 +42,8 @@ function MenuNav() {
         const res = await getMenuList(token)
         console.log('获取菜单列表 res:', res)
         dispatch(setMenuList(res.data))
+        // 菜单到达后，动态补充路由
+        addMenuRoutes(res.data)
       } catch (error) {
         console.log('menu list fetch error:', error)
       }
