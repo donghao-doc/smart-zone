@@ -4,6 +4,7 @@ import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import tseslint from 'typescript-eslint'
+import stylistic from '@stylistic/eslint-plugin'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
@@ -21,6 +22,7 @@ export default defineConfig([
       globals: globals.browser,
     },
     plugins: {
+      '@stylistic': stylistic,
       'simple-import-sort': simpleImportSort,
     },
     rules: {
@@ -38,6 +40,19 @@ export default defineConfig([
       'no-multi-spaces': ['error'],
       // 注释符号后必须保留一个空格
       'spaced-comment': ['error', 'always'],
+      // 必须使用 === 和 !==
+      eqeqeq: ['error', 'always'],
+      // 二元运算符左右必须有空格（含赋值运算符）
+      'space-infix-ops': ['error'],
+      // 关键字前后必须有空格（如 if / else）
+      'keyword-spacing': ['error', { before: true, after: true }],
+      // 块级花括号前必须有空格
+      'space-before-blocks': ['error', 'always'],
+      // 类型注解的冒号后必须有空格
+      '@stylistic/type-annotation-spacing': [
+        'error',
+        { before: false, after: true },
+      ],
       // 允许使用 any 类型
       '@typescript-eslint/no-explicit-any': 'off',
       // import 顺序：第三方库 > 绝对路径 > 相对路径
