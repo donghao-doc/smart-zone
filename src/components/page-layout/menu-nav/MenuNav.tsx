@@ -1,6 +1,7 @@
 import { Menu } from 'antd'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import { getMenuList, type MenuApiItem, type MenuItem } from '../../../api/system'
 import logo from '../../../assets/logo.png'
@@ -13,10 +14,13 @@ import './menu-nav.scss'
 
 function MenuNav() {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
   const menuList = useSelector((state: RootState) => state.system.menuList)
   const token = useSelector((state: RootState) => state.user.token)
 
-  function handleMenuClick() {}
+  function handleMenuClick({ key }: { key: string }) {
+    navigate(key)
+  }
 
   const mapMenuItems = (items: MenuApiItem[]): MenuItem[] =>
     items.map((item) => {
