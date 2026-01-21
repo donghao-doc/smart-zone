@@ -11,7 +11,7 @@ import logo from '../../assets/logo.png'
 import { type AppDispatch } from '../../store'
 import { setUser } from '../../store/userSlice'
 
-import './login.scss'
+import './style.scss'
 
 function Login() {
   type LoginFormValues = {

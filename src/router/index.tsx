@@ -3,9 +3,8 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import RequireAuth from './RequireAuth'
 
-const Home = lazy(() => import('../pages/Home'))
-const Login = lazy(() => import('../pages/login/Login'))
-const NotFound = lazy(() => import('../pages/NotFound'))
+const Login = lazy(() => import('../pages/login'))
+const NotFound = lazy(() => import('../pages/404'))
 const PageLayout = lazy(() => import('../components/page-layout/PageLayout'))
 
 const router = createBrowserRouter([
@@ -27,10 +26,6 @@ const router = createBrowserRouter([
       </RequireAuth>
     ),
     children: [
-      {
-        index: true,
-        element: <Home />,
-      },
       {
         path: '*',
         element: <NotFound />,
