@@ -27,7 +27,7 @@ Mock.mock('https://www.demo.com/login', 'post', (options: any) => {
         btnAuth: ['add', 'edit']
       }
     }
-  } else if (username == 'user' && password === 'user123') {
+  } else if (username === 'user' && password === 'user123') {
     return {
       code: 200,
       message: '登录成功',
@@ -395,19 +395,19 @@ Mock.mock(/https:\/\/www\.demo\.com\/menu.*/, 'get', (options: any) => {
   const token = requestUrl.includes('?')
     ? new URL(requestUrl, 'https://www.demo.com').searchParams.get('token')
     : null
-  if (token == 'mocktoken123456admin') {
+  if (token === 'mocktoken123456admin') {
     return {
       code: 200,
       message: '请求成功',
       data: menuList
     }
-  } else if (token == 'mocktoken123456user') {
+  } else if (token === 'mocktoken123456user') {
     return {
       code: 200,
       message: '请求成功',
       data: userMenuList
     }
-  } else if (token == 'mocktoken123456manager') {
+  } else if (token === 'mocktoken123456manager') {
     return {
       code: 200,
       message: '请求成功',

@@ -22,7 +22,7 @@ import {
   UserOutlined
 } from '@ant-design/icons'
 
-const iconMap:any = {
+const iconMap: any = {
   DashboardOutlined: <DashboardOutlined />,
   UserOutlined: <UserOutlined />,
   UnorderedListOutlined: <UnorderedListOutlined />,
