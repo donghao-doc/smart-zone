@@ -160,11 +160,6 @@ const menuList = [
     'icon': 'SettingOutlined',
     'label': '系统设置',
     'key': '/settings',
-  },
-  {
-    'icon': 'UserOutlined',
-    'label': '个人中心',
-    'key': '/personal',
   }
 ]
 
@@ -228,11 +223,6 @@ const userMenuList = [
     'icon': 'ThunderboltOutlined',
     'label': '能源消耗',
     'key': '/energy',
-  },
-  {
-    'icon': 'UserOutlined',
-    'label': '个人中心',
-    'key': '/personal',
   }
 ]
 
@@ -328,11 +318,6 @@ const managerMenuList = [
     'icon': 'SettingOutlined',
     'label': '系统设置',
     'key': '/settings',
-  },
-  {
-    'icon': 'UserOutlined',
-    'label': '个人中心',
-    'key': '/personal',
   }
 ]
 
@@ -381,11 +366,6 @@ const customizeMenuList = [
     'icon': 'ThunderboltOutlined',
     'label': '能源消耗',
     'key': '/energy',
-  },
-  {
-    'icon': 'UserOutlined',
-    'label': '个人中心',
-    'key': '/personal',
   }
 ]
 

@@ -38,6 +38,10 @@ const router = createBrowserRouter([
         element: componentMap['/dashboard'],
       },
       {
+        path: 'personal',
+        element: componentMap['/personal'],
+      },
+      {
         path: '*',
         element: <NotFound />,
       },
