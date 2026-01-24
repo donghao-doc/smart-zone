@@ -9,16 +9,20 @@ import { persistor, store } from './store'
 import 'normalize.css'
 import './index.scss'
 
-if (import.meta.env.DEV) {
-  import('./mock')
+const bootstrap = async () => {
+  if (import.meta.env.DEV) {
+    await import('./mock')
+  }
+
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </StrictMode>,
+  )
 }
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </StrictMode>,
-)
+bootstrap()

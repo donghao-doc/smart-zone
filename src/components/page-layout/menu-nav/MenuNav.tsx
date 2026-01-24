@@ -1,24 +1,18 @@
 import { Menu } from 'antd'
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-import { getMenuList, type MenuApiItem, type MenuItem } from '../../../api/system'
+import type { MenuApiItem, MenuItem } from '../../../api/system'
 import logo from '../../../assets/logo.png'
-import { addMenuRoutes } from '../../../router'
-import type { AppDispatch, RootState } from '../../../store'
-import { setMenuList } from '../../../store/systemSlice'
+import type { RootState } from '../../../store'
 import iconMap from './IconMap'
 
 import './menu-nav.scss'
 
 function MenuNav() {
-  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
   const location = useLocation()
   const menuList = useSelector((state: RootState) => state.system.menuList)
-  const token = useSelector((state: RootState) => state.user.token)
 
   function handleMenuClick({ key }: { key: string }) {
     navigate(key)
@@ -41,22 +35,6 @@ function MenuNav() {
 
       return baseItem
     })
-
-  useEffect(() => {
-    const fetchMenuList = async () => {
-      try {
-        const res = await getMenuList(token)
-        console.log('获取菜单列表 res:', res)
-        dispatch(setMenuList(res.data))
-        // 菜单到达后，动态补充路由
-        addMenuRoutes(res.data)
-      } catch (error) {
-        console.log('menu list fetch error:', error)
-      }
-    }
-
-    fetchMenuList()
-  }, [dispatch, token])
 
   const menuItems = mapMenuItems(menuList)
   const selectedKey = location.pathname === '/' ? '/dashboard' : location.pathname

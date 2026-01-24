@@ -23,7 +23,7 @@ const persistedReducer = persistReducer(
   {
     key: 'smart-zone',
     storage,
-    whitelist: ['system', 'user'],
+    whitelist: ['user'],
   },
   rootReducer,
 )
