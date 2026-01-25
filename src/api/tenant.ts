@@ -52,3 +52,13 @@ export const saveUser = (
 ): Promise<ApiResponse<string>> => {
   return post<string, SaveUserPayload>('/editUser', data)
 }
+
+export const deleteUser = (id: string): Promise<ApiResponse<string>> => {
+  return post<string, { id: string }>('/deleteUser', { id })
+}
+
+export const batchDeleteUser = (
+  ids: string[],
+): Promise<ApiResponse<string>> => {
+  return post<string, { ids: string[] }>('/batchDeleteUser', { ids })
+}

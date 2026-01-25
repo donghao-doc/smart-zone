@@ -1,7 +1,7 @@
 import { Button, Card, Col, Input, Pagination, Popconfirm, Row, Table, type TableProps, Tag } from 'antd'
 import { type ChangeEvent, type Key, useEffect, useState } from 'react'
 
-import { getUserList, saveUser, type UserListItem } from '../../api/tenant'
+import { batchDeleteUser, deleteUser, getUserList, saveUser, type UserListItem } from '../../api/tenant'
 import UserForm, { type UserFormValues } from './UserForm.tsx'
 
 type SearchFormData = {
@@ -97,12 +97,28 @@ function UserList() {
     }
   }
 
-  const confirm = (id: string) => {
-    console.log('删除企业', id)
+  const confirm = async (id: string) => {
+    try {
+      await deleteUser(id)
+      setSelectedRowKeys((prev) => prev.filter((key) => String(key) !== id))
+      refreshList()
+    } catch (error) {
+      console.log('删除企业失败:', error)
+    }
   }
 
-  const batchDelete = () => {
-    console.log('批量删除企业', selectedRowKeys)
+  const batchDelete = async () => {
+    const ids = selectedRowKeys.map((key) => String(key))
+    if (ids.length === 0) {
+      return
+    }
+    try {
+      await batchDeleteUser(ids)
+      setSelectedRowKeys([])
+      refreshList()
+    } catch (error) {
+      console.log('批量删除企业失败:', error)
+    }
   }
 
   const rowSelection: TableProps<DataType>['rowSelection'] = {
