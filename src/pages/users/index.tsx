@@ -1,5 +1,5 @@
 import { Button, Card, Col, Input, Pagination, Popconfirm, Row, Table, type TableProps, Tag } from 'antd'
-import { type ChangeEvent, type Key, useEffect, useState } from 'react'
+import { type ChangeEvent, type Key, memo, useCallback, useEffect, useState } from 'react'
 
 import { batchDeleteUser, deleteUser, getUserList, saveUser, type UserListItem } from '../../api/tenant'
 import UserForm, { type UserFormValues } from './UserForm.tsx'
@@ -19,6 +19,8 @@ const initialFormData: SearchFormData = {
   contact: '',
   phone: '',
 }
+
+const MemoUserForm = memo(UserForm)
 
 function UserList() {
   const [formData, setFormData] = useState<SearchFormData>(initialFormData)
@@ -56,9 +58,9 @@ function UserList() {
     setPage(1)
   }
 
-  const refreshList = () => {
+  const refreshList = useCallback(() => {
     setQueryParams((prev) => ({ ...prev }))
-  }
+  }, [])
 
   const onChange = (nextPage: number, nextPageSize: number) => {
     setPage(nextPage)
@@ -77,12 +79,12 @@ function UserList() {
     setIsModalOpen(true)
   }
 
-  const hideModal = () => {
+  const hideModal = useCallback(() => {
     setIsModalOpen(false)
     setEditingRecord(null)
-  }
+  }, [])
 
-  const handleSubmit = async (values: UserFormValues) => {
+  const handleSubmit = useCallback(async (values: UserFormValues) => {
     try {
       const payload = {
         ...values,
@@ -95,7 +97,7 @@ function UserList() {
     } catch (error) {
       console.log('保存企业失败:', error)
     }
-  }
+  }, [editingRecord, hideModal, refreshList])
 
   const confirm = async (id: string) => {
     try {
@@ -243,7 +245,7 @@ function UserList() {
 
   return (
     <div className="users">
-      <UserForm
+      <MemoUserForm
         visible={isModalOpen}
         title={modalTitle}
         initialValues={editingRecord}
