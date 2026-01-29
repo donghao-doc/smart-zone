@@ -11,10 +11,12 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
+import financeReducer from './financeSlice'
 import systemReducer from './systemSlice'
 import userReducer from './userSlice'
 
 const rootReducer = combineReducers({
+  finance: financeReducer,
   system: systemReducer,
   user: userReducer,
 })
