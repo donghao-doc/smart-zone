@@ -7,6 +7,7 @@ export interface MenuApiItem {
   icon?: string
   label: string
   key: string
+  menu?: boolean
   children?: MenuApiItem[]
 }
 

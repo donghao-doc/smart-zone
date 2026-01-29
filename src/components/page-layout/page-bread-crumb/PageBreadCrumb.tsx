@@ -12,34 +12,54 @@ type BreadNode = {
   isDirectory: boolean
 }
 
-const findBreadcrumbNodes = (
+const normalizePath = (path: string) =>
+  path.endsWith('/') && path.length > 1 ? path.slice(0, -1) : path
+
+const buildBreadcrumbNodes = (
   menuList: MenuApiItem[],
   targetPath: string,
 ) => {
-  const walk = (items: MenuApiItem[], parents: BreadNode[]): BreadNode[] => {
+  const menuMap = new Map<string, BreadNode>()
+  const parentMap = new Map<string, string>()
+
+  const walk = (items: MenuApiItem[], parentKey?: string) => {
     for (const item of items) {
-      const nextParents = [
-        ...parents,
-        {
-          key: item.key,
-          label: item.label,
-          isDirectory: Boolean(item.children && item.children.length > 0),
-        },
-      ]
-      if (item.key === targetPath) {
-        return nextParents
+      const normalizedKey = normalizePath(item.key)
+      const hasVisibleChildren =
+        item.children?.some((child) => child.menu !== false) ?? false
+      menuMap.set(normalizedKey, {
+        key: normalizedKey,
+        label: item.label,
+        isDirectory: hasVisibleChildren,
+      })
+
+      if (parentKey) {
+        parentMap.set(normalizedKey, parentKey)
       }
 
       if (item.children && item.children.length > 0) {
-        const result = walk(item.children, nextParents)
-        if (result.length > 0) return result
+        walk(item.children, normalizedKey)
       }
     }
-
-    return []
   }
 
-  return walk(menuList, [])
+  walk(menuList)
+
+  const nodes: BreadNode[] = []
+  let currentKey = normalizePath(targetPath)
+  const visited = new Set<string>()
+
+  while (currentKey && !visited.has(currentKey)) {
+    const node = menuMap.get(currentKey)
+    if (!node) {
+      break
+    }
+    nodes.push(node)
+    visited.add(currentKey)
+    currentKey = parentMap.get(currentKey) ?? ''
+  }
+
+  return nodes.reverse()
 }
 
 function PageBreadCrumb() {
@@ -48,7 +68,7 @@ function PageBreadCrumb() {
   const currentPath = location.pathname === '/' ? '/dashboard' : location.pathname
 
   const breadList = useMemo(() => {
-    const nodes = findBreadcrumbNodes(menuList, currentPath)
+    const nodes = buildBreadcrumbNodes(menuList, currentPath)
     return nodes.map((node, index) => {
       const isLast = index === nodes.length - 1
       const canLink = !isLast && !node.isDirectory

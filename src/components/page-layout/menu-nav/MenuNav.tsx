@@ -19,22 +19,28 @@ function MenuNav() {
   }
 
   const mapMenuItems = (items: MenuApiItem[]): MenuItem[] =>
-    items.map((item) => {
-      const baseItem: MenuItem = {
-        key: item.key,
-        label: item.label,
-        icon: typeof item.icon === 'string' ? iconMap[item.icon] : undefined,
-      }
+    items
+      .filter((item) => item.menu !== false)
+      .map((item) => {
+        const baseItem: MenuItem = {
+          key: item.key,
+          label: item.label,
+          icon: typeof item.icon === 'string' ? iconMap[item.icon] : undefined,
+        }
 
-      if (item.children && item.children.length > 0) {
-        return {
-          ...baseItem,
-          children: mapMenuItems(item.children),
-        } as MenuItem
-      }
+        if (item.children && item.children.length > 0) {
+          const children = mapMenuItems(item.children)
+          if (children.length === 0) {
+            return baseItem
+          }
+          return {
+            ...baseItem,
+            children,
+          } as MenuItem
+        }
 
-      return baseItem
-    })
+        return baseItem
+      })
 
   const getParentKeys = (
     items: MenuApiItem[],

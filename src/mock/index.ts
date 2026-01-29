@@ -106,11 +106,14 @@ const menuList = [
         'icon': 'ProfileOutlined',
         'label': '合同管理',
         'key': '/finance/contract',
-      },
-      {
-        'icon': 'FrownOutlined',
-        'label': '合同详情',
-        'key': '/finance/surrender',
+        'children': [
+          {
+            'icon': 'FrownOutlined',
+            'label': '合同详情',
+            'key': '/finance/surrender',
+            'menu': false,
+          },
+        ],
       },
       {
         'icon': 'FileTextOutlined',
