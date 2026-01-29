@@ -528,10 +528,54 @@ Mock.mock('https://www.demo.com/contractList', 'post', (options: any) => {
         'jia|1': ['万物科技有限公司', '大鱼网络科技', '六六信息技术有限公司'],
         'yi': '天明物业有限公司',
         'status|1': ['1', '2', '3'],
+        'person': '@cname',
+        'tel': '@phone',
+        'rejectReason|1': ['缺少法人盖章', '附件材料不齐全', '合同条款有误'],
+        'extraTerms': ['半年付，年租', '费用已包含空调费用', '含两个车位使用权(不含充电桩)', '9：00-18：00禁止装修'],
+        'building|1': ['A1幢写字楼', 'B1幢写字楼', 'C1幢写字楼'],
+        'roomNo|1': ['406', '502', '701', '1601'],
+        'area|1': [96, 120, 150],
+        'pricingArea|1': [70, 80, 110],
+        'propertyFee|1': [6800, 7200, 8500],
+        'houseStatus|1': ['精装', '毛坯'],
+        'steward|1': ['蔡文萍', '张安定', '刘伟'],
+        'stewardTel|1': ['@phone'],
       }],
       'total': 54
     })
     // 生成55条数据
+  }
+})
+
+// 合同详情
+Mock.mock('https://www.demo.com/contractDetail', 'post', (options: any) => {
+  const { contractNo } = JSON.parse(options.body)
+  console.log('后端合同详情接到参数', JSON.parse(options.body))
+  return {
+    code: 200,
+    message: '成功',
+    data: Mock.mock({
+      'contractNo': contractNo || '@string("number", 6)',
+      'type|1': ['租赁合同', '自定义合同', '购买合同'],
+      'name|1': ['房屋租赁合同通用模版', '车位租赁合同通用模版', '商业房产买卖合同'],
+      'startDate|1': ['2023-01-01', '2023-03-05', '2023-04-01'],
+      'endDate|1': ['2024-01-01', '2024-03-05', '2024-04-01'],
+      'jia|1': ['万物科技有限公司', '大鱼网络科技', '六六信息技术有限公司'],
+      'yi': '天明物业有限公司',
+      'status|1': ['1', '2', '3'],
+      'person': '@cname',
+      'tel': '@phone',
+      'rejectReason|1': ['缺少法人盖章', '附件材料不齐全', '合同条款有误'],
+      'extraTerms': ['半年付，年租', '费用已包含空调费用', '含两个车位使用权(不含充电桩)', '9：00-18：00禁止装修'],
+      'building|1': ['A1幢写字楼', 'B1幢写字楼', 'C1幢写字楼'],
+      'roomNo|1': ['406', '502', '701', '1601'],
+      'area|1': [96, 120, 150],
+      'pricingArea|1': [70, 80, 110],
+      'propertyFee|1': [6800, 7200, 8500],
+      'houseStatus|1': ['精装', '毛坯'],
+      'steward|1': ['蔡文萍', '张安定', '刘伟'],
+      'stewardTel|1': ['@phone'],
+    })
   }
 })
 
