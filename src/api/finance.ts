@@ -40,6 +40,36 @@ export interface ContractDetailResponse extends ContractListItem {
   stewardTel?: string
 }
 
+export interface BillListParams {
+  page: number
+  pageSize: number
+  startDate?: string
+  endDate?: string
+  no?: string
+  status?: string
+}
+
+export interface BillListItem {
+  accountNo: string
+  status?: string | number
+  roomNo?: string
+  carNo?: string
+  tel?: string
+  costName1?: string | number
+  costName2?: string
+  costName3?: string
+  startDate?: string
+  endDate?: string
+  preferential?: number
+  money?: number
+  pay?: string
+}
+
+export interface BillListResponse {
+  list: BillListItem[]
+  total: number
+}
+
 export const getContractList = (
   data: ContractListParams,
 ): Promise<ApiResponse<ContractListResponse>> => {
@@ -53,4 +83,10 @@ export const getContractDetail = (
     '/contractDetail',
     { contractNo },
   )
+}
+
+export const getBillList = (
+  data: BillListParams,
+): Promise<ApiResponse<BillListResponse>> => {
+  return post<BillListResponse, BillListParams>('/billList', data)
 }
