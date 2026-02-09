@@ -427,6 +427,56 @@ Mock.Random.extend({
   }
 })
 
+const equipmentNames = ['中央空调', '电梯主机', '消防泵', '变压器', '配电柜', '监控主机', '门禁控制器', '新风系统']
+const equipmentTypes = ['XK-100', 'LT-520', 'FP-88', 'BYQ-300', 'PD-120', 'JK-76', 'MJ-32', 'XF-260']
+const manufacturers = ['中能设备', '东海机电', '华瑞科技', '远望工业', '联成制造', '天行智能']
+const maintainers = ['赵铁柱', '刘伟', '王敏', '陈磊', '李婷', '周楠', '张安定']
+const lifeCycle = ['5年', '6年', '8年', '10年', '12年', '15年']
+const remainingLife = ['6个月', '1年', '2年', '3年', '4年', '5年']
+
+const equipmentList = Array.from({ length: 68 }, (_, index) => {
+  return {
+    id: index + 1,
+    no: `EQ${String(100000 + index)}`,
+    name: Mock.Random.pick(equipmentNames),
+    person: Mock.Random.pick(maintainers),
+    tel: Mock.Random.phone(),
+    time: Mock.Random.pick(lifeCycle),
+    rest: Mock.Random.pick(remainingLife),
+    status: Mock.Random.pick([1, 2, 3]),
+    last: Mock.Random.date('yyyy-MM-dd'),
+    type: Mock.Random.pick(equipmentTypes),
+    from: Mock.Random.pick(manufacturers),
+  }
+})
+
+// 设备列表接口
+Mock.mock('https://www.demo.com/equipmentList', 'post', (options: any) => {
+  const { page = 1, pageSize = 10, name = '', person = '' } = JSON.parse(options.body ?? '{}')
+  const keyword = String(name).trim()
+  const managerKeyword = String(person).trim()
+
+  const filteredList = equipmentList.filter((item) => {
+    const matchedName = !keyword || item.name.includes(keyword) || item.no.includes(keyword)
+    const matchedPerson = !managerKeyword || item.person.includes(managerKeyword)
+    return matchedName && matchedPerson
+  })
+
+  const currentPage = Number(page) > 0 ? Number(page) : 1
+  const currentPageSize = Number(pageSize) > 0 ? Number(pageSize) : 10
+  const start = (currentPage - 1) * currentPageSize
+  const end = start + currentPageSize
+
+  return {
+    code: 200,
+    message: '成功',
+    data: {
+      list: filteredList.slice(start, end),
+      total: filteredList.length,
+    }
+  }
+})
+
 // 租户列表的接口
 Mock.mock('https://www.demo.com/userList', 'post', (options: any) => {
   const { pageSize, page, companyName, contact, phone } = JSON.parse(options.body)
