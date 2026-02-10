@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd'
 
-import { get } from '../http'
+import { get, post } from '../http'
 import type { ApiResponse } from '../http/types'
 
 export interface MenuApiItem {
@@ -18,4 +18,12 @@ export const getMenuList = (
   token: string,
 ): Promise<ApiResponse<MenuApiItem[]>> => {
   return get<MenuApiItem[]>('/menu', { token })
+}
+
+interface AccountData{
+  accountName: string
+}
+
+export function getAccountList(data: AccountData) {
+  return post('/accountList', data)
 }
