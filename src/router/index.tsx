@@ -41,11 +41,11 @@ const router = createBrowserRouter([
         path: 'personal',
         element: componentMap['/personal'],
       },
-      {
-        path: '*',
-        element: <NotFound />,
-      },
     ],
+  },
+  {
+    path: '*',
+    element: <NotFound />,
   },
 ])
 
